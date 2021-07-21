@@ -24,7 +24,7 @@ class PurchaseItem extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'code';
 
     /**
      * The columns that should be searched.
