@@ -51,7 +51,7 @@ class Purchase extends Resource
         return [
             ID::make(__('ID'), 'id')->hideFromDetail(),
 
-            Text::make('Code'),
+            Text::make('Code')->exceptOnForms(),
 
             BelongsTo::make('Company'),
 
