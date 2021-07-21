@@ -29,7 +29,7 @@ class Purchase extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'code';
 
     /**
      * The columns that should be searched.
@@ -57,6 +57,7 @@ class Purchase extends Resource
 
             BelongsTo::make('Vendor', 'vendor', Company::class),
 
+            Date::make('Purchased At')->nullable(),
 
             MorphOne::make('Invoice'),
 

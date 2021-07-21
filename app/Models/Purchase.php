@@ -13,6 +13,8 @@ class Purchase extends Model
 
     protected $fillable = ['code'];
 
+    protected $casts = ['purchased_at' => 'datetime'];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
