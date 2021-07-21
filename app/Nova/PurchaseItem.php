@@ -2,12 +2,16 @@
 
 namespace App\Nova;
 
+use Brick\Money\Money;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Stack;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class PurchaseItem extends Resource
@@ -54,19 +58,25 @@ class PurchaseItem extends Resource
 //                ->searchable(),
 
             Currency::make('Price')->currency('IDR')->required()
-                ->hideFromIndex(),
+                ->onlyOnForms(),
 
-            Number::make('Quantity')->required()
-                ->hideFromIndex(),
+            Number::make('Quantity')->required()->onlyOnForms(),
 
-            Currency::make('Sub Total')->currency('IDR')
-                ->exceptOnForms()
-                ->hideFromIndex()
-                ->readonly(),
+            Stack::make('Qty', [
+                Line::make('Quantity')->asHeading(),
+                Line::make('Price', function () {
+                    return '@' . Money::of($this->price, 'IDR');
+                })->asSmall()
+            ])->exceptOnForms(),
 
-            Currency::make('Total')->currency('IDR')
-                ->exceptOnForms()
-                ->readonly(),
+            Stack::make('Total', [
+                Currency::make('Total')->currency('IDR'),
+
+                Line::make('Sub Total', function () {
+                    $formatted = Money::of($this->sub_total, 'IDR');
+                    return "<span style='font-size: 10px;'><del>{$formatted}</del></span>";
+                })->asSmall()->asHtml(),
+            ])->exceptOnForms(),
 
             MorphMany::make('Withholdings')
         ];
