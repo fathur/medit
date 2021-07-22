@@ -69,17 +69,29 @@ class PurchaseItem extends Resource
                 })->asSmall()
             ])->exceptOnForms(),
 
-            Stack::make('Total', [
+            Stack::make('Total', $this->totalFields())->exceptOnForms(),
+
+            MorphMany::make('Withholdings')
+        ];
+    }
+
+    protected function totalFields()
+    {
+        if ($this->sub_total > $this->total) {
+            return [
                 Currency::make('Total')->currency('IDR'),
 
                 Line::make('Sub Total', function () {
                     $formatted = Money::of($this->sub_total, 'IDR');
                     return "<span style='font-size: 10px;'><del>{$formatted}</del></span>";
                 })->asSmall()->asHtml(),
-            ])->exceptOnForms(),
+            ];
+        } else {
+            return [
+                Currency::make('Total')->currency('IDR')
+            ];
+        }
 
-            MorphMany::make('Withholdings')
-        ];
     }
 
     /**
