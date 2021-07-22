@@ -6,6 +6,7 @@ use App\Models\Expense;
 use App\Models\ExpenseItem;
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Withholding;
@@ -13,6 +14,7 @@ use App\Observers\ExpenseItemObserver;
 use App\Observers\ExpenseObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\PaymentObserver;
+use App\Observers\ProductObserver;
 use App\Observers\PurchaseItemObserver;
 use App\Observers\PurchaseObserver;
 use App\Observers\WithholdingObserver;
@@ -41,6 +43,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Product::observe(ProductObserver::class);
         Purchase::observe(PurchaseObserver::class);
         PurchaseItem::observe(PurchaseItemObserver::class);
         Withholding::observe(WithholdingObserver::class);
