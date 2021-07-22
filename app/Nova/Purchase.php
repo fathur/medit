@@ -60,6 +60,7 @@ class Purchase extends Resource
 
             BelongsTo::make('Company')->onlyOnDetail(),
 
+
             BelongsTo::make('Vendor', 'vendor', Company::class),
 
             Date::make('Purchased At')->nullable(),

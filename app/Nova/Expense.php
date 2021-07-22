@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Filters\CompanyFilter;
+
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
@@ -42,6 +43,7 @@ class Expense extends Resource
 
     public static $group = 'Main';
 
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -58,6 +60,7 @@ class Expense extends Resource
             BelongsTo::make('Pay From', 'account', Account::class),
 
             BelongsTo::make('Company')->onlyOnDetail(),
+
 
             BelongsTo::make('Vendor', 'vendor', Company::class)->nullable(),
 
@@ -96,8 +99,9 @@ class Expense extends Resource
      */
     public function filters(Request $request)
     {
-        return [
-        ];
+
+        return [];
+
     }
 
     /**
@@ -139,6 +143,7 @@ class Expense extends Resource
         ];
     }
 
+
     /**
      * Build an "index" query for the given resource.
      *
@@ -151,4 +156,5 @@ class Expense extends Resource
         $company = $request->user()->companies()->first();
         return $query->where('company_id', optional($company)->id);
     }
+
 }
