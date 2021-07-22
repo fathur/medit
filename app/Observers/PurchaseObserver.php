@@ -19,7 +19,7 @@ class PurchaseObserver
 
             $numberedLatestCode = (int)$exploded[1];
             $incrementCode = $numberedLatestCode + 1;
-            $incrementCode = str_pad((string) $incrementCode, 6, '0', STR_PAD_LEFT);
+            $incrementCode = str_pad((string)$incrementCode, 6, '0', STR_PAD_LEFT);
             $purchase->code = 'PUR/' . $incrementCode;
         } else {
             $purchase->code = 'PUR/000001';
@@ -33,4 +33,15 @@ class PurchaseObserver
             'balance_due' => $purchase->total
         ]);
     }
+
+    public function updated(Purchase $purchase)
+    {
+        $purchaseTotal = $purchase->total;
+        $invoicePaid = $purchase->invoice->paid;
+        $invoiceBalanceDue = $purchaseTotal - $invoicePaid;
+        $purchase->invoice()->update([
+           'balance_due' => $invoiceBalanceDue
+        ]);
+    }
+
 }
