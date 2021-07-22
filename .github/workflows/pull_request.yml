@@ -4,12 +4,8 @@ on:
   pull_request:
     branches: [ main ]
     paths-ignore:
-      - .github/**
       - public/**
       - storage/**
-env:
-  NOVA_USERNAME: ${{ secrets.NOVA_USERNAME }}
-  NOVA_PASSWORD: ${{ secrets.NOVA_PASSWORD }}
 
 jobs:
   tests:
@@ -22,11 +18,11 @@ jobs:
         php-version: '8.0'
     - uses: actions/checkout@v2
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.test', '.env');"
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Signin into Nova
-      run: composer config http-basic.nova.laravel.com $NOVA_USERNAME $NOVA_PASSWORD
+      run: composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer install -q --no-ansi --no-interaction --no-scripts --prefer-dist
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
@@ -35,8 +31,8 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+#    - name: Execute tests (Unit and Feature tests) via PHPUnit
+#      env:
+#        DB_CONNECTION: sqlite
+#        DB_DATABASE: database/database.sqlite
+#      run: vendor/bin/phpunit
