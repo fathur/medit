@@ -37,7 +37,7 @@ class Withholding extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -45,10 +45,14 @@ class Withholding extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
-            MorphTo::make('Withholdingable', 'withholdingable')->types([
-                PurchaseItem::class,
-                Purchase::class,
-            ]),
+            MorphTo::make('Withholdingable', 'withholdingable')->types(
+                [
+                    PurchaseItem::class,
+                    Purchase::class,
+                    Expense::class,
+                    ExpenseItem::class
+                ]
+            ),
 
             BelongsTo::make('Account'),
 
@@ -59,7 +63,7 @@ class Withholding extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -70,7 +74,7 @@ class Withholding extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -81,7 +85,7 @@ class Withholding extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -92,7 +96,7 @@ class Withholding extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

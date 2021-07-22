@@ -39,7 +39,7 @@ class Invoice extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -49,9 +49,11 @@ class Invoice extends Resource
 
             Text::make('Code'),
 
-            MorphTo::make('Invoiceable')->types([
+            MorphTo::make('Invoiceable')->types(
+                [
                 Purchase::class
-            ]),
+                ]
+            ),
 
             Date::make('Due At')->format('DD MMM YYYY mm:ss'),
 
@@ -73,7 +75,7 @@ class Invoice extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -84,7 +86,7 @@ class Invoice extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -95,7 +97,7 @@ class Invoice extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -106,7 +108,7 @@ class Invoice extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

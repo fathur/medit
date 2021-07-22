@@ -3,26 +3,32 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
-class User extends Resource
+class Expense extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\User::class;
+    public static $model = \App\Models\Expense::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'code';
 
     /**
      * The columns that should be searched.
@@ -30,7 +36,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
     ];
 
     /**
@@ -42,24 +48,27 @@ class User extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make(__('ID'), 'id')->hideFromDetail(),
 
-            Gravatar::make()->maxWidth(50),
+            Text::make('Code')->exceptOnForms(),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+            BelongsTo::make('Company'),
 
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+            BelongsTo::make('Vendor', 'vendor', Company::class)->nullable(),
 
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
+            Date::make('Expensed At')->nullable(),
+
+            MorphOne::make('Invoice'),
+
+            new Panel('Cost Calculation', $this->costFields()),
+
+            HasMany::make('Items', 'items', ExpenseItem::class),
+
+            Currency::make('Total')
+                ->currency('IDR')->readonly()
+                ->exceptOnForms(),
+
+            MorphMany::make('Withholdings')
         ];
     }
 
@@ -105,5 +114,22 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    private function costFields()
+    {
+        return [
+            Currency::make('Sub Total', 'sub_total')
+                ->currency('IDR')
+                ->readonly()
+                ->onlyOnDetail(),
+
+            Currency::make('Total')
+                ->currency('IDR')
+                ->readonly()
+                ->onlyOnDetail(),
+
+
+        ];
     }
 }

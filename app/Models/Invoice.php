@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Invoice extends Model
 {
-    use HasFactory, Uuid;
+    use HasFactory;
+    use Uuid;
 
     protected $fillable = ['due_at'];
 

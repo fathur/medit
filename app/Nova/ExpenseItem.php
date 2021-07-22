@@ -2,28 +2,33 @@
 
 namespace App\Nova;
 
+use Brick\Money\Money;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Line;
+use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Stack;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class ProductPrice extends Resource
+class ExpenseItem extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\ProductPrice::class;
+    public static $model = \App\Models\ExpenseItem::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'code';
 
     /**
      * The columns that should be searched.
@@ -43,13 +48,31 @@ class ProductPrice extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make(__('ID'), 'id'),
 
-            BelongsTo::make('Product'),
+            BelongsTo::make('Expense'),
 
-            Currency::make('Buy Price')->currency('IDR'),
+            Text::make('Product')->required(),
 
-            Currency::make('Sell Price')->currency('IDR'),
+            Currency::make('Price')->currency('IDR')->required()
+                ->onlyOnForms(),
+
+            Number::make('Quantity')->required()->onlyOnForms(),
+
+            Stack::make(
+                'Qty', [
+                Line::make('Quantity')->asHeading(),
+                Line::make(
+                    'Price', function () {
+                        return '@' . Money::of($this->price, 'IDR');
+                    }
+                )->asSmall()
+                ]
+            )->exceptOnForms(),
+
+            Stack::make('Total', $this->totalFields())->exceptOnForms(),
+
+            MorphMany::make('Withholdings')
         ];
     }
 
@@ -97,11 +120,23 @@ class ProductPrice extends Resource
         return [];
     }
 
-    public function title()
+    protected function totalFields()
     {
-        $buyPrice = $this->buy_price / 1000;
-        $sellPrice = $this->sell_price / 1000;
+        if ($this->sub_total > $this->total) {
+            return [
+                Currency::make('Total')->currency('IDR'),
 
-        return "{$this->product->name} ({$buyPrice}K/{$sellPrice}K)";
+                Line::make(
+                    'Sub Total', function () {
+                        $formatted = Money::of($this->sub_total, 'IDR');
+                        return "<span style='font-size: 10px;'><del>{$formatted}</del></span>";
+                    }
+                )->asSmall()->asHtml(),
+            ];
+        } else {
+            return [
+                Currency::make('Total')->currency('IDR')
+            ];
+        }
     }
 }

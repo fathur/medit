@@ -41,7 +41,6 @@ class PurchaseItemObserver
      */
     public function calculatePurchaseTotal(Purchase $purchase): void
     {
-
         $subTotal = $purchase->items()->sum('total');
 
         $purchase->sub_total = $subTotal;
