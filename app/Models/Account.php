@@ -10,4 +10,6 @@ class Account extends Model
 {
     use HasFactory;
     use Uuid;
+
+    protected $fillable = ['code', 'name', 'category'];
 }
