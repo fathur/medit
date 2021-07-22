@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
@@ -40,6 +41,8 @@ class Purchase extends Resource
         'id',
     ];
 
+    public static $group = 'Main';
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -55,7 +58,8 @@ class Purchase extends Resource
 
             BelongsTo::make('Pay From', 'account', Account::class),
 
-            BelongsTo::make('Company'),
+            BelongsTo::make('Company')->onlyOnDetail(),
+
 
             BelongsTo::make('Vendor', 'vendor', Company::class),
 
@@ -95,7 +99,8 @@ class Purchase extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+        ];
     }
 
     /**
@@ -135,5 +140,18 @@ class Purchase extends Resource
 
 
         ];
+    }
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $company = $request->user()->companies()->first();
+        return $query->where('company_id', optional($company)->id);
     }
 }

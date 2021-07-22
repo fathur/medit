@@ -2,7 +2,9 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\UserFilter;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -34,6 +36,8 @@ class Company extends Resource
         'id', 'name'
     ];
 
+    public static $displayInNavigation = false;
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -45,10 +49,13 @@ class Company extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
+            BelongsTo::make('User'),
+
             Text::make(__('Name'), 'name')
                 ->required(),
 
             Textarea::make(__('Address'), 'address')->nullable(true),
+
 
             HasMany::make('Products'),
 
@@ -77,7 +84,8 @@ class Company extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+        ];
     }
 
     /**
@@ -100,5 +108,21 @@ class Company extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Build a "relatable" query for the given resource.
+     *
+     * This query determines which instances of the model may be attached to other resources.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Laravel\Nova\Fields\Field  $field
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function relatableQuery(NovaRequest $request, $query)
+    {
+        return $query->whereNotIn('user_id', [$request->user()->id])
+            ->orWhereNull('user_id');
     }
 }

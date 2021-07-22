@@ -11,6 +11,10 @@ class Product extends Model
     use HasFactory;
     use Uuid;
 
+
+    protected $fillable = ['company_id'];
+
+
     public function company(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Company::class);
