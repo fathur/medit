@@ -2,27 +2,26 @@
 
 namespace App\Nova;
 
+use Brick\Money\Money;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\MorphMany;
-use Laravel\Nova\Fields\MorphOne;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
 
-class Purchase extends Resource
+class ExpenseItem extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Purchase::class;
+    public static $model = \App\Models\ExpenseItem::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -49,30 +48,33 @@ class Purchase extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->hideFromDetail(),
+            ID::make(__('ID'), 'id'),
 
-            Text::make('Code')->exceptOnForms(),
+            BelongsTo::make('Expense'),
 
-            BelongsTo::make('Pay From', 'account', Account::class),
+            Text::make('Product')->required(),
 
-            BelongsTo::make('Company'),
+            Currency::make('Price')->currency('IDR')->required()
+                ->onlyOnForms(),
 
-            BelongsTo::make('Vendor', 'vendor', Company::class),
+            Number::make('Quantity')->required()->onlyOnForms(),
 
-            Date::make('Purchased At')->nullable(),
+            Stack::make(
+                'Qty',
+                [
+                Line::make('Quantity')->asHeading(),
+                Line::make(
+                    'Price',
+                    function () {
+                        return '@' . Money::of($this->price, 'IDR');
+                    }
+                )->asSmall()
+                ]
+            )->exceptOnForms(),
 
-            MorphOne::make('Invoice'),
-
-            new Panel('Cost Calculation', $this->costFields()),
-
-            HasMany::make('Items', 'items', PurchaseItem::class),
-
-            Currency::make('Total')
-                ->currency('IDR')->readonly()
-                ->exceptOnForms(),
+            Stack::make('Total', $this->totalFields())->exceptOnForms(),
 
             MorphMany::make('Withholdings')
-
         ];
     }
 
@@ -120,20 +122,24 @@ class Purchase extends Resource
         return [];
     }
 
-    private function costFields()
+    protected function totalFields()
     {
-        return [
-            Currency::make('Sub Total', 'sub_total')
-                ->currency('IDR')
-                ->readonly()
-                ->onlyOnDetail(),
+        if ($this->sub_total > $this->total) {
+            return [
+                Currency::make('Total')->currency('IDR'),
 
-            Currency::make('Total')
-                ->currency('IDR')
-                ->readonly()
-                ->onlyOnDetail(),
-
-
-        ];
+                Line::make(
+                    'Sub Total',
+                    function () {
+                        $formatted = Money::of($this->sub_total, 'IDR');
+                        return "<span style='font-size: 10px;'><del>{$formatted}</del></span>";
+                    }
+                )->asSmall()->asHtml(),
+            ];
+        } else {
+            return [
+                Currency::make('Total')->currency('IDR')
+            ];
+        }
     }
 }

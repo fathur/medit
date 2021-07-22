@@ -13,13 +13,16 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->foreignUuid('company_id')->references('id')->on('companies')
-                ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->timestamps();
-        });
+        Schema::create(
+            'products',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
+                $table->string('name');
+                $table->foreignUuid('company_id')->references('id')->on('companies')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
+                $table->timestamps();
+            }
+        );
     }
 
     /**

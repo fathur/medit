@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Purchase extends Model
+class Expense extends Model
 {
     use HasFactory;
     use Uuid;
 
+
     protected $fillable = ['code'];
 
-    protected $casts = ['purchased_at' => 'datetime'];
+    protected $casts = ['expensed_at' => 'datetime'];
 
     public function company(): BelongsTo
     {
@@ -33,7 +34,7 @@ class Purchase extends Model
 
     public function items()
     {
-        return $this->hasMany(PurchaseItem::class);
+        return $this->hasMany(ExpenseItem::class);
     }
 
     public function invoice()

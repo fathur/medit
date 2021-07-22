@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory, Uuid;
+    use HasFactory;
+    use Uuid;
 
     public function company(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

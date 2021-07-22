@@ -13,10 +13,13 @@ class AddFieldsToActionEventsTable extends Migration
      */
     public function up()
     {
-        Schema::table('action_events', function (Blueprint $table) {
-            $table->mediumText('original')->nullable();
-            $table->mediumText('changes')->nullable();
-        });
+        Schema::table(
+            'action_events',
+            function (Blueprint $table) {
+                $table->mediumText('original')->nullable();
+                $table->mediumText('changes')->nullable();
+            }
+        );
     }
 
     /**
@@ -26,8 +29,11 @@ class AddFieldsToActionEventsTable extends Migration
      */
     public function down()
     {
-        Schema::table('action_events', function (Blueprint $table) {
-            $table->dropColumn('original', 'changes');
-        });
+        Schema::table(
+            'action_events',
+            function (Blueprint $table) {
+                $table->dropColumn('original', 'changes');
+            }
+        );
     }
 }

@@ -6,26 +6,16 @@ use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PurchaseItem extends Model
+class ExpenseItem extends Model
 {
     use HasFactory;
     use Uuid;
 
     protected $fillable = ['sub_total', 'total'];
 
-    public function purchase()
+    public function expense()
     {
-        return $this->belongsTo(Purchase::class);
-    }
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
-
-    public function productPrice()
-    {
-        return $this->belongsTo(ProductPrice::class);
+        return $this->belongsTo(Expense::class);
     }
 
     public function withholdings()

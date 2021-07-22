@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Expense;
+use App\Models\ExpenseItem;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Withholding;
+use App\Observers\ExpenseItemObserver;
+use App\Observers\ExpenseObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\PurchaseItemObserver;
@@ -42,5 +46,7 @@ class EventServiceProvider extends ServiceProvider
         Withholding::observe(WithholdingObserver::class);
         Invoice::observe(InvoiceObserver::class);
         Payment::observe(PaymentObserver::class);
+        Expense::observe(ExpenseObserver::class);
+        ExpenseItem::observe(ExpenseItemObserver::class);
     }
 }

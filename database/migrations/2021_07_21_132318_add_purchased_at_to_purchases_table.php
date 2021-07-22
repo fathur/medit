@@ -13,9 +13,12 @@ class AddPurchasedAtToPurchasesTable extends Migration
      */
     public function up()
     {
-        Schema::table('purchases', function (Blueprint $table) {
-            $table->timestamp('purchased_at')->nullable();
-        });
+        Schema::table(
+            'purchases',
+            function (Blueprint $table) {
+                $table->timestamp('purchased_at')->nullable();
+            }
+        );
     }
 
     /**
@@ -25,8 +28,11 @@ class AddPurchasedAtToPurchasesTable extends Migration
      */
     public function down()
     {
-        Schema::table('purchases', function (Blueprint $table) {
-            $table->dropColumn('purchased_at');
-        });
+        Schema::table(
+            'purchases',
+            function (Blueprint $table) {
+                $table->dropColumn('purchased_at');
+            }
+        );
     }
 }
