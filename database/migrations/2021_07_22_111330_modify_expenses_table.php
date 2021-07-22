@@ -13,31 +13,37 @@ class ModifyExpensesTable extends Migration
      */
     public function up()
     {
-        Schema::table('expenses', function (Blueprint $table) {
-            $table->dropColumn('id');
-        });
+        Schema::table(
+            'expenses',
+            function (Blueprint $table) {
+                $table->dropColumn('id');
+            }
+        );
 
-        Schema::table('expenses', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::table(
+            'expenses',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
 
-            $table->string('code');
+                $table->string('code');
 
-            $table->foreignUuid('company_id')->references('id')->on('companies')
-                ->cascadeOnDelete()->cascadeOnUpdate();
+                $table->foreignUuid('company_id')->references('id')->on('companies')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->foreignUuid('vendor_id')
-                ->nullable()
-                ->references('id')->on('companies')
-                ->cascadeOnDelete()->cascadeOnUpdate();
+                $table->foreignUuid('vendor_id')
+                    ->nullable()
+                    ->references('id')->on('companies')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->timestamp('expensed_at')->nullable();
+                $table->timestamp('expensed_at')->nullable();
 
-            $table->unsignedBigInteger('sub_total')->default(0);
+                $table->unsignedBigInteger('sub_total')->default(0);
 
-            $table->unsignedBigInteger('total')->default(0);
+                $table->unsignedBigInteger('total')->default(0);
 
-            $table->unique(['code', 'company_id']);
-        });
+                $table->unique(['code', 'company_id']);
+            }
+        );
     }
 
     /**
@@ -47,24 +53,30 @@ class ModifyExpensesTable extends Migration
      */
     public function down()
     {
-        Schema::table('expenses', function (Blueprint $table) {
-            $table->dropColumn('id');
-        });
+        Schema::table(
+            'expenses',
+            function (Blueprint $table) {
+                $table->dropColumn('id');
+            }
+        );
 
-        Schema::table('expenses', function (Blueprint $table) {
-            $table->id('id');
+        Schema::table(
+            'expenses',
+            function (Blueprint $table) {
+                $table->id('id');
 
-            $table->dropColumn('code');
+                $table->dropColumn('code');
 
-            $table->dropColumn('company_id');
+                $table->dropColumn('company_id');
 
-            $table->dropColumn('vendor_id');
+                $table->dropColumn('vendor_id');
 
-            $table->dropColumn('sub_total');
+                $table->dropColumn('sub_total');
 
-            $table->dropColumn('total');
+                $table->dropColumn('total');
 
-            $table->dropColumn('expensed_at');
-        });
+                $table->dropColumn('expensed_at');
+            }
+        );
     }
 }

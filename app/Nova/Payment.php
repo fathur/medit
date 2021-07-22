@@ -51,7 +51,6 @@ class Payment extends Resource
 
             DateTime::make('Paid At'),
 
-            BelongsTo::make('Bank', 'payFromBank')
         ];
     }
 

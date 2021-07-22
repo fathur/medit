@@ -63,10 +63,12 @@ class PurchaseItem extends Resource
             Number::make('Quantity')->required()->onlyOnForms(),
 
             Stack::make(
-                'Qty', [
+                'Qty',
+                [
                 Line::make('Quantity')->asHeading(),
                 Line::make(
-                    'Price', function () {
+                    'Price',
+                    function () {
                         return '@' . Money::of($this->price, 'IDR');
                     }
                 )->asSmall()
@@ -86,7 +88,8 @@ class PurchaseItem extends Resource
                 Currency::make('Total')->currency('IDR'),
 
                 Line::make(
-                    'Sub Total', function () {
+                    'Sub Total',
+                    function () {
                         $formatted = Money::of($this->sub_total, 'IDR');
                         return "<span style='font-size: 10px;'><del>{$formatted}</del></span>";
                     }

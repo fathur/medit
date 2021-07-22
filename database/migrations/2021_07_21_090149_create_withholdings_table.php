@@ -13,14 +13,17 @@ class CreateWithholdingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('withholdings', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuidMorphs('withholdingable');
-            $table->foreignUuid('account_id')->references('id')->on('accounts')
-                ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->unsignedBigInteger('nominal')->default(0);
-            $table->timestamps();
-        });
+        Schema::create(
+            'withholdings',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
+                $table->uuidMorphs('withholdingable');
+                $table->foreignUuid('account_id')->references('id')->on('accounts')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
+                $table->unsignedBigInteger('nominal')->default(0);
+                $table->timestamps();
+            }
+        );
     }
 
     /**

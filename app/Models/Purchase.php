@@ -26,6 +26,11 @@ class Purchase extends Model
         return $this->belongsTo(Company::class, 'vendor_id');
     }
 
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class);
+    }
+
     public function items()
     {
         return $this->hasMany(PurchaseItem::class);

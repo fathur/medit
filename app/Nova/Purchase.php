@@ -53,6 +53,8 @@ class Purchase extends Resource
 
             Text::make('Code')->exceptOnForms(),
 
+            BelongsTo::make('Pay From', 'account', Account::class),
+
             BelongsTo::make('Company'),
 
             BelongsTo::make('Vendor', 'vendor', Company::class),

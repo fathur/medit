@@ -13,25 +13,28 @@ class CreateExpenseItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('expense_items', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create(
+            'expense_items',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
 
-            $table->foreignUuid('expense_id')->references('id')->on('expenses')
-                ->cascadeOnDelete()->cascadeOnUpdate();
+                $table->foreignUuid('expense_id')->references('id')->on('expenses')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->unsignedInteger('quantity')->default(0);
+                $table->unsignedInteger('quantity')->default(0);
 
 
 
-            $table->string('product');
+                $table->string('product');
 
-            $table->unsignedBigInteger('price')->default(0);
+                $table->unsignedBigInteger('price')->default(0);
 
-            $table->unsignedBigInteger('sub_total')->default(0);
+                $table->unsignedBigInteger('sub_total')->default(0);
 
-            $table->unsignedBigInteger('total')->default(0);
-            $table->timestamps();
-        });
+                $table->unsignedBigInteger('total')->default(0);
+                $table->timestamps();
+            }
+        );
     }
 
     /**

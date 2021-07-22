@@ -13,14 +13,17 @@ class CreateProductPricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_prices', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('product_id')->references('id')->on('products')
-                ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->unsignedBigInteger('buy_price')->default(0);
-            $table->unsignedBigInteger('sell_price')->default(0);
-            $table->timestamps();
-        });
+        Schema::create(
+            'product_prices',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
+                $table->foreignUuid('product_id')->references('id')->on('products')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
+                $table->unsignedBigInteger('buy_price')->default(0);
+                $table->unsignedBigInteger('sell_price')->default(0);
+                $table->timestamps();
+            }
+        );
     }
 
     /**

@@ -13,22 +13,25 @@ class CreateInvoicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoices', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuidMorphs('invoiceable');
-            $table->timestamp('due_at');
+        Schema::create(
+            'invoices',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
+                $table->uuidMorphs('invoiceable');
+                $table->timestamp('due_at');
 
-            $table->string('code');
+                $table->string('code');
 
-            $table->unsignedBigInteger('paid')->default(0);
+                $table->unsignedBigInteger('paid')->default(0);
 
-            $table->unsignedBigInteger('balance_due')->default(0);
+                $table->unsignedBigInteger('balance_due')->default(0);
 
-//            $table->enum('status', ['pending', 'paid', 'partially_paid']);
-            $table->timestamps();
+                //            $table->enum('status', ['pending', 'paid', 'partially_paid']);
+                $table->timestamps();
 
-            $table->unique(['code', 'invoiceable_type', 'invoiceable_id']);
-        });
+                $table->unique(['code', 'invoiceable_type', 'invoiceable_id']);
+            }
+        );
     }
 
     /**
