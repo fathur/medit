@@ -3,13 +3,18 @@
 namespace App\Observers;
 
 use App\Models\Expense;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ExpenseObserver
 {
     public function creating(Expense $expense)
     {
-        $company = $expense->company;
+//        $company = $expense->company;
+        $company = Auth::user()->companies()->first();
+
+        $expense->company_id = $company->id;
+
         $latestCode = $company->expenses()->max('code');
 
 

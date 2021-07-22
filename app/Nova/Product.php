@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
@@ -34,6 +35,8 @@ class Product extends Resource
         'id',
     ];
 
+    public static $group = 'Master';
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -47,7 +50,7 @@ class Product extends Resource
 
             Text::make(__('Name'), 'name'),
 
-            BelongsTo::make('Company'),
+//            BelongsTo::make('Company'),
 
             HasMany::make('Product Prices', 'prices', ProductPrice::class)
         ];
@@ -95,5 +98,11 @@ class Product extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function relatableQuery(NovaRequest $request, $query)
+    {
+        $company = $request->user()->companies()->first();
+        $query->where('company_id', optional($company)->id);
     }
 }

@@ -4,13 +4,18 @@ namespace App\Observers;
 
 use App\Models\Purchase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PurchaseObserver
 {
     public function creating(Purchase $purchase)
     {
-        $company = $purchase->company;
+//        $company = $purchase->company;
+        $company = Auth::user()->companies()->first();
+
+        $purchase->company_id = $company->id;
+
         $latestCode = $company->purchases()->max('code');
 
         if ($latestCode) {
