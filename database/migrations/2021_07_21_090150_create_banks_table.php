@@ -13,13 +13,16 @@ class CreateBanksTable extends Migration
      */
     public function up()
     {
-        Schema::create('banks', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->foreignUuid('company_id')->references('id')->on('companies')
-                ->cascadeOnUpdate()->cascadeOnDelete();
-            $table->timestamps();
-        });
+        Schema::create(
+            'banks',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
+                $table->string('name');
+                $table->foreignUuid('company_id')->references('id')->on('companies')
+                    ->cascadeOnUpdate()->cascadeOnDelete();
+                $table->timestamps();
+            }
+        );
     }
 
     /**

@@ -42,7 +42,7 @@ class PurchaseItem extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -54,20 +54,26 @@ class PurchaseItem extends Resource
 
             BelongsTo::make('Product')->required(),
 
-//            BelongsTo::make('Product Price', 'productPrice', ProductPrice::class),
-//                ->searchable(),
+        //            BelongsTo::make('Product Price', 'productPrice', ProductPrice::class),
+        //                ->searchable(),
 
             Currency::make('Price')->currency('IDR')->required()
                 ->onlyOnForms(),
 
             Number::make('Quantity')->required()->onlyOnForms(),
 
-            Stack::make('Qty', [
+            Stack::make(
+                'Qty',
+                [
                 Line::make('Quantity')->asHeading(),
-                Line::make('Price', function () {
-                    return '@' . Money::of($this->price, 'IDR');
-                })->asSmall()
-            ])->exceptOnForms(),
+                Line::make(
+                    'Price',
+                    function () {
+                        return '@' . Money::of($this->price, 'IDR');
+                    }
+                )->asSmall()
+                ]
+            )->exceptOnForms(),
 
             Stack::make('Total', $this->totalFields())->exceptOnForms(),
 
@@ -81,23 +87,25 @@ class PurchaseItem extends Resource
             return [
                 Currency::make('Total')->currency('IDR'),
 
-                Line::make('Sub Total', function () {
-                    $formatted = Money::of($this->sub_total, 'IDR');
-                    return "<span style='font-size: 10px;'><del>{$formatted}</del></span>";
-                })->asSmall()->asHtml(),
+                Line::make(
+                    'Sub Total',
+                    function () {
+                        $formatted = Money::of($this->sub_total, 'IDR');
+                        return "<span style='font-size: 10px;'><del>{$formatted}</del></span>";
+                    }
+                )->asSmall()->asHtml(),
             ];
         } else {
             return [
                 Currency::make('Total')->currency('IDR')
             ];
         }
-
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -108,7 +116,7 @@ class PurchaseItem extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -119,7 +127,7 @@ class PurchaseItem extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -130,13 +138,11 @@ class PurchaseItem extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)
     {
         return [];
     }
-
-
 }

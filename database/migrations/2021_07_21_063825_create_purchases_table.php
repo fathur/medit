@@ -13,25 +13,28 @@ class CreatePurchasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('purchases', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create(
+            'purchases',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
 
-            $table->string('code');
+                $table->string('code');
 
-            $table->foreignUuid('company_id')->references('id')->on('companies')
-                ->cascadeOnDelete()->cascadeOnUpdate();
+                $table->foreignUuid('company_id')->references('id')->on('companies')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->foreignUuid('vendor_id')->references('id')->on('companies')
-                ->cascadeOnDelete()->cascadeOnUpdate();
+                $table->foreignUuid('vendor_id')->references('id')->on('companies')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->unsignedBigInteger('sub_total')->default(0);
+                $table->unsignedBigInteger('sub_total')->default(0);
 
-            $table->unsignedBigInteger('total')->default(0);
+                $table->unsignedBigInteger('total')->default(0);
 
-            $table->timestamps();
+                $table->timestamps();
 
-            $table->unique(['code', 'company_id']);
-        });
+                $table->unique(['code', 'company_id']);
+            }
+        );
     }
 
     /**

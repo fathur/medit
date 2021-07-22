@@ -13,13 +13,16 @@ class CreateAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('code')->unique();
-            $table->string('name');
-            $table->string('category')->nullable();
-            $table->timestamps();
-        });
+        Schema::create(
+            'accounts',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
+                $table->string('code')->unique();
+                $table->string('name');
+                $table->string('category')->nullable();
+                $table->timestamps();
+            }
+        );
     }
 
     /**

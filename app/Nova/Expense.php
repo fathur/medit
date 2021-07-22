@@ -5,25 +5,30 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\MorphOne;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
-class Payment extends Resource
+class Expense extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Payment::class;
+    public static $model = \App\Models\Expense::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'code';
 
     /**
      * The columns that should be searched.
@@ -43,14 +48,29 @@ class Payment extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make(__('ID'), 'id')->hideFromDetail(),
 
-            BelongsTo::make('Invoice'),
+            Text::make('Code')->exceptOnForms(),
 
-            Currency::make('Nominal')->currency('IDR'),
+            BelongsTo::make('Pay From', 'account', Account::class),
 
-            DateTime::make('Paid At'),
+            BelongsTo::make('Company'),
 
+            BelongsTo::make('Vendor', 'vendor', Company::class)->nullable(),
+
+            Date::make('Expensed At')->nullable(),
+
+            MorphOne::make('Invoice'),
+
+            new Panel('Cost Calculation', $this->costFields()),
+
+            HasMany::make('Items', 'items', ExpenseItem::class),
+
+            Currency::make('Total')
+                ->currency('IDR')->readonly()
+                ->exceptOnForms(),
+
+            MorphMany::make('Withholdings')
         ];
     }
 
@@ -96,5 +116,22 @@ class Payment extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    private function costFields()
+    {
+        return [
+            Currency::make('Sub Total', 'sub_total')
+                ->currency('IDR')
+                ->readonly()
+                ->onlyOnDetail(),
+
+            Currency::make('Total')
+                ->currency('IDR')
+                ->readonly()
+                ->onlyOnDetail(),
+
+
+        ];
     }
 }

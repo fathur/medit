@@ -18,20 +18,20 @@ class InvoiceObserver
 
     public function generateCode(Invoice $invoice)
     {
-//        $invoiceable = $invoice->invoiceable;
-//        $latestCode = $invoiceable->invoice()->max('code');
+        //        $invoiceable = $invoice->invoiceable;
+        //        $latestCode = $invoiceable->invoice()->max('code');
 
-//        if ($latestCode) {
+        //        if ($latestCode) {
 
-//            $exploded = Str::of($latestCode)->explode('INV/');
-//
-//            $numberedLatestCode = (int)$exploded[1];
-//            $incrementCode = $numberedLatestCode + 1;
-//            $incrementCode = str_pad((string) $incrementCode, 6, '0', STR_PAD_LEFT);
+        //            $exploded = Str::of($latestCode)->explode('INV/');
+        //
+        //            $numberedLatestCode = (int)$exploded[1];
+        //            $incrementCode = $numberedLatestCode + 1;
+        //            $incrementCode = str_pad((string) $incrementCode, 6, '0', STR_PAD_LEFT);
         $incrementCode = Str::random(6);
         $invoice->code = 'INV/' . $incrementCode;
-//        } else {
-//            $invoice->code = 'INV/000001';
-//        }
+        //        } else {
+        //            $invoice->code = 'INV/000001';
+        //        }
     }
 }

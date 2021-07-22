@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    use HasFactory, Uuid;
+    use HasFactory;
+    use Uuid;
 
     protected $casts = [
         'paid_at' => 'datetime'

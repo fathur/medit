@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductPricesTable extends Migration
+class CreateExpenseItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +14,24 @@ class CreateProductPricesTable extends Migration
     public function up()
     {
         Schema::create(
-            'product_prices',
+            'expense_items',
             function (Blueprint $table) {
                 $table->uuid('id')->primary();
-                $table->foreignUuid('product_id')->references('id')->on('products')
+
+                $table->foreignUuid('expense_id')->references('id')->on('expenses')
                     ->cascadeOnDelete()->cascadeOnUpdate();
-                $table->unsignedBigInteger('buy_price')->default(0);
-                $table->unsignedBigInteger('sell_price')->default(0);
+
+                $table->unsignedInteger('quantity')->default(0);
+
+
+
+                $table->string('product');
+
+                $table->unsignedBigInteger('price')->default(0);
+
+                $table->unsignedBigInteger('sub_total')->default(0);
+
+                $table->unsignedBigInteger('total')->default(0);
                 $table->timestamps();
             }
         );
@@ -33,6 +44,6 @@ class CreateProductPricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_prices');
+        Schema::dropIfExists('expense_items');
     }
 }
