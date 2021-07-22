@@ -91,7 +91,6 @@ class PurchaseItem extends Resource
                 Currency::make('Total')->currency('IDR')
             ];
         }
-
     }
 
     /**
@@ -137,6 +136,4 @@ class PurchaseItem extends Resource
     {
         return [];
     }
-
-
 }

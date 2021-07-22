@@ -14,7 +14,6 @@ class PurchaseObserver
         $latestCode = $company->purchases()->max('code');
 
         if ($latestCode) {
-
             $exploded = Str::of($latestCode)->explode('PUR/');
 
             $numberedLatestCode = (int)$exploded[1];
@@ -24,7 +23,6 @@ class PurchaseObserver
         } else {
             $purchase->code = 'PUR/000001';
         }
-
     }
 
     public function created(Purchase $purchase)
@@ -43,5 +41,4 @@ class PurchaseObserver
            'balance_due' => $invoiceBalanceDue
         ]);
     }
-
 }

@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Withholding extends Model
 {
-    use HasFactory, Uuid;
+    use HasFactory;
+    use Uuid;
 
     public function account()
     {

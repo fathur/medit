@@ -13,16 +13,13 @@ class WithholdingObserver
         $withholdingable = $withholding->withholdingable;
 
         if ($withholdingable instanceof PurchaseItem) {
-
             $purchaseItem = PurchaseItem::find($withholdingable->id);
 
             $subtractWithholding = $purchaseItem->withholdings()->sum('nominal');
 
             $purchaseItem->total = $purchaseItem->total - $subtractWithholding;
             $purchaseItem->save();
-
         } elseif ($withholdingable instanceof Purchase) {
-
             $purchase = Purchase::find($withholdingable->id);
 
             $subtractWithholding = $purchase->withholdings()->sum('nominal');
