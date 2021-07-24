@@ -9,6 +9,9 @@ abstract class Resource extends NovaResource
 {
     public static $tableStyle = 'tight';
 
+    public static $perPageViaRelationship = 10;
+
+
     /**
      * Build an "index" query for the given resource.
      *
