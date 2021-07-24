@@ -2,11 +2,11 @@
 
 namespace App\Nova;
 
-use App\Nova\Filters\CompanyFilter;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
@@ -15,14 +15,14 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class Expense extends Resource
+class Transaction extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Expense::class;
+    public static $model = \App\Models\Transaction::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -42,11 +42,10 @@ class Expense extends Resource
 
     public static $group = 'Main';
 
-
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
@@ -56,33 +55,33 @@ class Expense extends Resource
 
             Text::make('Code')->exceptOnForms(),
 
-            BelongsTo::make('Pay From', 'account', Account::class),
+            BelongsTo::make('Pay To', 'account', Account::class),
 
             BelongsTo::make('Company')->onlyOnDetail(),
 
+            BelongsTo::make('Customer'),
 
-            BelongsTo::make('Vendor', 'vendor', Company::class)->nullable(),
-
-            Date::make('Expensed At')->nullable(),
+            Date::make('Transaction At')->nullable(),
 
             MorphOne::make('Invoice'),
 
             new Panel('Cost Calculation', $this->costFields()),
 
-            HasMany::make('Items', 'items', ExpenseItem::class),
+            HasMany::make('Items', 'items', TransactionItem::class),
 
             Currency::make('Total')
                 ->currency('IDR')->readonly()
                 ->exceptOnForms(),
 
             MorphMany::make('Withholdings')
+
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -93,7 +92,7 @@ class Expense extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -104,7 +103,7 @@ class Expense extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -115,7 +114,7 @@ class Expense extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)
@@ -139,7 +138,6 @@ class Expense extends Resource
 
         ];
     }
-
 
     /**
      * Build an "index" query for the given resource.

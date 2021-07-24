@@ -52,7 +52,7 @@ class Purchase extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->hideFromDetail(),
+//            ID::make(__('ID'), 'id')->hideFromDetail(),
 
             Text::make('Code')->exceptOnForms(),
 

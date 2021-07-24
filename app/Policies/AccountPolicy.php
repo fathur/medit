@@ -21,6 +21,6 @@ class AccountPolicy
 
     public function viewAny()
     {
-        return false;
+        return true;
     }
 }

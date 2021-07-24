@@ -3,21 +3,19 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Product extends Resource
+class Customer extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Product::class;
+    public static $model = \App\Models\Customer::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -40,7 +38,7 @@ class Product extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
@@ -48,18 +46,20 @@ class Product extends Resource
         return [
 //            ID::make(__('ID'), 'id')->sortable(),
 
-            Text::make(__('Name'), 'name'),
+            Text::make('Name')->required(),
 
-//            BelongsTo::make('Company'),
+            Text::make('Phone'),
 
-            HasMany::make('Product Prices', 'prices', ProductPrice::class)
+            Text::make('Email')->rules('email:rfc,filter'),
+
+            Textarea::make('Address')
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -70,7 +70,7 @@ class Product extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -81,7 +81,7 @@ class Product extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -92,17 +92,11 @@ class Product extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)
     {
         return [];
-    }
-
-    public static function relatableQuery(NovaRequest $request, $query)
-    {
-        $company = $request->user()->companies()->first();
-        $query->where('company_id', optional($company)->id);
     }
 }

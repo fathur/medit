@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Customer;
 use App\Models\Expense;
 use App\Models\ExpenseItem;
 use App\Models\Invoice;
@@ -9,7 +10,10 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
+use App\Models\Transaction;
+use App\Models\TransactionItem;
 use App\Models\Withholding;
+use App\Observers\CustomerObserver;
 use App\Observers\ExpenseItemObserver;
 use App\Observers\ExpenseObserver;
 use App\Observers\InvoiceObserver;
@@ -17,6 +21,8 @@ use App\Observers\PaymentObserver;
 use App\Observers\ProductObserver;
 use App\Observers\PurchaseItemObserver;
 use App\Observers\PurchaseObserver;
+use App\Observers\TransactionItemObserver;
+use App\Observers\TransactionObserver;
 use App\Observers\WithholdingObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -51,5 +57,8 @@ class EventServiceProvider extends ServiceProvider
         Payment::observe(PaymentObserver::class);
         Expense::observe(ExpenseObserver::class);
         ExpenseItem::observe(ExpenseItemObserver::class);
+        Customer::observe(CustomerObserver::class);
+        Transaction::observe(TransactionObserver::class);
+        TransactionItem::observe(TransactionItemObserver::class);
     }
 }
