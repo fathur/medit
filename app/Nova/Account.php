@@ -32,6 +32,8 @@ class Account extends Resource
         'id',
     ];
 
+    public static $group = 'Master';
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -41,7 +43,7 @@ class Account extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+//            ID::make(__('ID'), 'id')->sortable(),
 
             Text::make('Code')->required(),
 

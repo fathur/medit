@@ -50,10 +50,12 @@ class Withholding extends Resource
 
             MorphTo::make('Withholdingable', 'withholdingable')->types(
                 [
-                    PurchaseItem::class,
                     Purchase::class,
+                    PurchaseItem::class,
                     Expense::class,
-                    ExpenseItem::class
+                    ExpenseItem::class,
+                    Transaction::class,
+                    TransactionItem::class
                 ]
             ),
 

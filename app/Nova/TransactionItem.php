@@ -11,17 +11,16 @@ use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Stack;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class PurchaseItem extends Resource
+class TransactionItem extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\PurchaseItem::class;
+    public static $model = \App\Models\TransactionItem::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -41,11 +40,10 @@ class PurchaseItem extends Resource
 
     public static $displayInNavigation = false;
 
-
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function fields(Request $request)
@@ -53,12 +51,9 @@ class PurchaseItem extends Resource
         return [
 //            ID::make(__('ID'), 'id'),
 
-            BelongsTo::make('Purchase'),
+            BelongsTo::make('Transaction'),
 
             BelongsTo::make('Product')->required(),
-
-        //            BelongsTo::make('Product Price', 'productPrice', ProductPrice::class),
-        //                ->searchable(),
 
             Currency::make('Price')->currency('IDR')->required()
                 ->onlyOnForms(),
@@ -68,13 +63,13 @@ class PurchaseItem extends Resource
             Stack::make(
                 'Qty',
                 [
-                Line::make('Quantity')->asHeading(),
-                Line::make(
-                    'Price',
-                    function () {
-                        return '@' . Money::of($this->price, 'IDR');
-                    }
-                )->asSmall()
+                    Line::make('Quantity')->asHeading(),
+                    Line::make(
+                        'Price',
+                        function () {
+                            return '@' . Money::of($this->price, 'IDR');
+                        }
+                    )->asSmall()
                 ]
             )->exceptOnForms(),
 
@@ -108,7 +103,7 @@ class PurchaseItem extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -119,7 +114,7 @@ class PurchaseItem extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -130,7 +125,7 @@ class PurchaseItem extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -141,7 +136,7 @@ class PurchaseItem extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function actions(Request $request)
