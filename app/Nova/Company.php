@@ -51,6 +51,8 @@ class Company extends Resource
 
 //            BelongsTo::make('User'),
 
+            BelongsTo::make('User'),
+
             Text::make(__('Name'), 'name')
                 ->required(),
 
