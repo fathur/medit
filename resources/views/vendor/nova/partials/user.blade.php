@@ -12,29 +12,36 @@
 </dropdown-trigger>
 
 <dropdown-menu slot="menu" width="200" direction="rtl">
+
+
     <ul class="list-reset">
+
         <li>
             <a href="{{ url("resources/users/" . \Illuminate\Support\Facades\Auth::user()->id) }}" class="block no-underline text-90 hover:bg-30 p-3">
                 {{ __('My Profile') }}
             </a>
         </li>
-    </ul>
 
-    @if(\Illuminate\Support\Facades\Auth::user()->companies()->count() == 1)
-    <ul class="list-reset">
+        @if(\Illuminate\Support\Facades\Auth::user()->companies()->count() == 1)
+            <li>
+                <a href="{{ url("resources/companies/" . \Illuminate\Support\Facades\Auth::user()->companies()->first()->id) }}" class="block no-underline text-90 hover:bg-30 p-3">
+                    {{ __('My Company') }}
+                </a>
+            </li>
+        @endif
+
+
         <li>
-            <a href="{{ url("resources/companies/" . \Illuminate\Support\Facades\Auth::user()->companies()->first()->id) }}" class="block no-underline text-90 hover:bg-30 p-3">
-                {{ __('My Company') }}
-            </a>
+            <nova-dark-theme-toggle
+                label="{{ __('Dark Theme') }}"
+            ></nova-dark-theme-toggle>
         </li>
-    </ul>
-    @endif
 
-    <ul class="list-reset">
         <li>
             <a href="{{ route('nova.logout') }}" class="block no-underline text-90 hover:bg-30 p-3">
                 {{ __('Logout') }}
             </a>
         </li>
+
     </ul>
 </dropdown-menu>
