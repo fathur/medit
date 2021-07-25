@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
@@ -38,7 +39,7 @@ class Purchase extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'code',
     ];
 
     public static $group = 'Main';
@@ -54,12 +55,11 @@ class Purchase extends Resource
         return [
 //            ID::make(__('ID'), 'id')->hideFromDetail(),
 
-            Text::make('Code')->exceptOnForms(),
+            Text::make('Code')->exceptOnForms()->sortable(),
 
             BelongsTo::make('Pay From', 'account', Account::class),
 
             BelongsTo::make('Company')->onlyOnDetail(),
-
 
             BelongsTo::make('Vendor', 'vendor', Company::class),
 
@@ -74,6 +74,10 @@ class Purchase extends Resource
             Currency::make('Total')
                 ->currency('IDR')->readonly()
                 ->exceptOnForms(),
+
+            Badge::make('Status', function () {
+                return $this->status;
+            })->map(\App\Models\Invoice::statusMap()),
 
             MorphMany::make('Withholdings')
 

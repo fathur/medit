@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
@@ -33,7 +34,7 @@ class Invoice extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'code',
     ];
 
     public static $displayInNavigation = false;
@@ -41,7 +42,7 @@ class Invoice extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -49,15 +50,21 @@ class Invoice extends Resource
         return [
 //            ID::make(__('ID'), 'id')->sortable(),
 
-            Text::make('Code'),
+            Text::make('Code')
+                ->exceptOnForms()
+                ->sortable(),
 
             MorphTo::make('Invoiceable')->types(
                 [
-                Purchase::class
+                    Purchase::class
                 ]
             ),
 
             Date::make('Due At')->format('DD MMM YYYY mm:ss'),
+
+            Badge::make('Status', function () {
+                return $this->status;
+            })->map(\App\Models\Invoice::statusMap()),
 
             HasMany::make('Payments'),
 
@@ -77,7 +84,7 @@ class Invoice extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -88,7 +95,7 @@ class Invoice extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -99,7 +106,7 @@ class Invoice extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -110,7 +117,7 @@ class Invoice extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

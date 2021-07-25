@@ -13,6 +13,8 @@ class Company extends Model
     use HasFactory;
     use Uuid;
 
+    protected $fillable = ['name'];
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
