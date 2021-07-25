@@ -2,8 +2,8 @@
 
 namespace App\Nova;
 
-use App\Nova\Filters\CompanyFilter;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphOne;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -37,7 +38,7 @@ class Expense extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'code',
     ];
 
     public static $group = 'Main';
@@ -54,9 +55,12 @@ class Expense extends Resource
         return [
 //            ID::make(__('ID'), 'id')->hideFromDetail(),
 
-            Text::make('Code')->exceptOnForms(),
+            Text::make('Code')->exceptOnForms()
+                ->sortable(),
 
-            BelongsTo::make('Pay From', 'account', Account::class),
+            BelongsTo::make('Pay From', 'fromAccount', Account::class),
+
+            BelongsTo::make('Pay To', 'toAccount', Account::class),
 
             BelongsTo::make('Company')->onlyOnDetail(),
 
@@ -74,6 +78,14 @@ class Expense extends Resource
             Currency::make('Total')
                 ->currency('IDR')->readonly()
                 ->exceptOnForms(),
+
+            MorphTo::make('Expensable')->types([
+                Transaction::class
+            ]),
+
+            Badge::make('Status', function () {
+                return $this->status;
+            })->map(\App\Models\Invoice::statusMap()),
 
             MorphMany::make('Withholdings')
         ];

@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -45,9 +46,15 @@ class Account extends Resource
         return [
 //            ID::make(__('ID'), 'id')->sortable(),
 
-            Text::make('Code')->required(),
+            Text::make('Code')->required()
+                ->rules('unique:accounts,code'),
 
             Text::make('Name')->required(),
+
+            Select::make('Category')->options([
+                'cost-of-sales' => 'Cost of Sales',
+                'bank-cash' => 'Bank & Cash'
+            ])
         ];
     }
 

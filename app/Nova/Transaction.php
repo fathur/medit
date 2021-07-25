@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
@@ -37,7 +38,7 @@ class Transaction extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'code',
     ];
 
     public static $group = 'Main';
@@ -53,13 +54,14 @@ class Transaction extends Resource
         return [
 //            ID::make(__('ID'), 'id')->hideFromDetail(),
 
-            Text::make('Code')->exceptOnForms(),
+            Text::make('Code')->exceptOnForms()
+                ->sortable(),
 
             BelongsTo::make('Pay To', 'account', Account::class),
 
             BelongsTo::make('Company')->onlyOnDetail(),
 
-            BelongsTo::make('Customer'),
+            BelongsTo::make('Customer')->showCreateRelationButton(),
 
             Date::make('Transaction At')->nullable(),
 
@@ -72,6 +74,12 @@ class Transaction extends Resource
             Currency::make('Total')
                 ->currency('IDR')->readonly()
                 ->exceptOnForms(),
+
+            Badge::make('Status', function () {
+                return $this->status;
+            })->map(\App\Models\Invoice::statusMap()),
+
+            MorphMany::make('Expenses'),
 
             MorphMany::make('Withholdings')
 

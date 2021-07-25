@@ -28,7 +28,7 @@ class ExpenseItem extends Resource
      *
      * @var string
      */
-    public static $title = 'code';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -36,7 +36,7 @@ class ExpenseItem extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        '',
     ];
 
     public static $displayInNavigation = false;
