@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a278dd15c6317c4906ad7711dd219b4c",
+    "content-hash": "3ec755d9f6de1aa3ae6b45c181ecf852",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1141,60 +1141,6 @@
                 }
             ],
             "time": "2020-04-13T13:17:36+00:00"
-        },
-        {
-            "name": "gregoriohc/laravel-nova-theme-responsive",
-            "version": "v0.8.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/gregoriohc/laravel-nova-theme-responsive.git",
-                "reference": "a37f8162872ea7483d2dec7091d29e49376df273"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/gregoriohc/laravel-nova-theme-responsive/zipball/a37f8162872ea7483d2dec7091d29e49376df273",
-                "reference": "a37f8162872ea7483d2dec7091d29e49376df273",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Gregoriohc\\LaravelNovaThemeResponsive\\ThemeServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Gregoriohc\\LaravelNovaThemeResponsive\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Gregorio Hernández Caso",
-                    "email": "gregoriohc@gmail.com",
-                    "homepage": "https://github.com/gregoriohc",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A Laravel Nova responsive theme.",
-            "homepage": "https://github.com/gregoriohc/laravel-nova-theme-responsive",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "support": {
-                "issues": "https://github.com/gregoriohc/laravel-nova-theme-responsive/issues",
-                "source": "https://github.com/gregoriohc/laravel-nova-theme-responsive/tree/master"
-            },
-            "time": "2020-03-08T16:15:03+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3444,6 +3390,84 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "spatie/laravel-permission",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "a6e4122b65094baba7f98df153af0768ef910c85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/a6e4122b65094baba7f98df153af0768ef910c85",
+                "reference": "a6e4122b65094baba7f98df153af0768ef910c85",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^6.0|^7.0|^8.0",
+                "illuminate/container": "^6.0|^7.0|^8.0",
+                "illuminate/contracts": "^6.0|^7.0|^8.0",
+                "illuminate/database": "^6.0|^7.0|^8.0",
+                "php": "^7.2.5|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^8.0|^9.0",
+                "predis/predis": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Permission\\PermissionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Permission\\": "src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Permission handling for Laravel 6.0 and up",
+            "homepage": "https://github.com/spatie/laravel-permission",
+            "keywords": [
+                "acl",
+                "laravel",
+                "permission",
+                "permissions",
+                "rbac",
+                "roles",
+                "security",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/4.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-06-04T23:47:08+00:00"
         },
         {
             "name": "spatie/once",
@@ -6051,6 +6075,56 @@
                 }
             ],
             "time": "2020-11-12T00:07:28+00:00"
+        },
+        {
+            "name": "vyuldashev/nova-permission",
+            "version": "v3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vyuldashev/nova-permission.git",
+                "reference": "6dfbc44b88206ff4362e1084177e1698d46b5aaf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vyuldashev/nova-permission/zipball/6dfbc44b88206ff4362e1084177e1698d46b5aaf",
+                "reference": "6dfbc44b88206ff4362e1084177e1698d46b5aaf",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "spatie/laravel-permission": "^3.0|^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Vyuldashev\\NovaPermission\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vyuldashev\\NovaPermission\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool for Spatie's Permission library.",
+            "keywords": [
+                "laravel",
+                "nova",
+                "spatie-permission"
+            ],
+            "support": {
+                "issues": "https://github.com/vyuldashev/nova-permission/issues",
+                "source": "https://github.com/vyuldashev/nova-permission/tree/v3.0.1"
+            },
+            "time": "2021-06-21T00:52:48+00:00"
         },
         {
             "name": "webmozart/assert",
