@@ -55,7 +55,8 @@ class PurchaseItem extends Resource
 
             BelongsTo::make('Purchase'),
 
-            BelongsTo::make('Product')->required(),
+            BelongsTo::make('Product')->required()
+                ->showCreateRelationButton(),
 
         //            BelongsTo::make('Product Price', 'productPrice', ProductPrice::class),
         //                ->searchable(),
