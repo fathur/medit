@@ -53,6 +53,11 @@ class Purchase extends Model
         return $this->morphMany(Withholding::class, 'withholdingable');
     }
 
+    public function expenses(): MorphMany
+    {
+        return $this->morphMany(Expense::class, 'expensable');
+    }
+
     public function getStatusAttribute(): string
     {
         return $this->attributes['status'] = optional($this->invoice)->status;

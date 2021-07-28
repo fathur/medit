@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -69,25 +70,33 @@ class Expense extends Resource
 
             Date::make('Expensed At')->nullable(),
 
-            MorphOne::make('Invoice'),
 
-            new Panel('Cost Calculation', $this->costFields()),
-
-            HasMany::make('Items', 'items', ExpenseItem::class),
 
             Currency::make('Total')
                 ->currency('IDR')->readonly()
                 ->exceptOnForms(),
 
             MorphTo::make('Expensable')->types([
-                Transaction::class
+                Transaction::class,
+                Purchase::class,
             ]),
 
             Badge::make('Status', function () {
                 return $this->status;
             })->map(\App\Models\Invoice::statusMap()),
 
-            MorphMany::make('Withholdings')
+
+            Tabs::make('Relations', [
+                HasMany::make('Items', 'items', ExpenseItem::class),
+
+                MorphMany::make('Withholdings'),
+
+            ]),
+
+
+            new Panel('Cost Calculation', $this->costFields()),
+
+            MorphOne::make('Invoice'),
         ];
     }
 

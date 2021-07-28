@@ -92,7 +92,7 @@ class ExpenseObserver
     public function adjustTotal(Expense $expense): void
     {
         // Jika ada expansable maka update total di expansable-nya
-        // Dalam kasus ini transaction
+        // Dalam kasus ini transaction dan purchases
         if (!is_null($expense->expensable)) {
             $expensable = $expense->expensable;
 
