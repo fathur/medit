@@ -64,5 +64,4 @@ class Transaction extends Model
     {
         return $this->attributes['status'] = optional($this->invoice)->status;
     }
-
 }
